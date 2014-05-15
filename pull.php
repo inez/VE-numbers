@@ -1,6 +1,9 @@
-
 <?php
-
+if ( $argv && count($argv) > 1 ) {
+	$days = $argv[1];
+} else {
+	$days = 0;
+}
 function escapeKibanaQuery( $query ) {
   return str_replace( '"', '\"', $query );
 }
@@ -43,8 +46,10 @@ function runQueries( $dateString, $queries ) {
   foreach ( $queries as $key => $val ) {
     $query = $query_template;
     $query = str_replace( '__query__', escapeKibanaQuery( $val ), $query );
-    $command = "curl -s -XGET http://datalog-s1:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
+    $command = "curl -s -XGET http://datalog-s3:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
+echo $command."\n\n\n";
     $output = shell_exec ( $command );
+print_r($output);
     $outputO = json_decode( $output, true );
     $results[$key] = $outputO['facets']['0']['entries']['0']['count'];
     if ( empty ( $results[$key] ) ) {
@@ -109,9 +114,8 @@ $queries['ve save isAnonymous=no isRedlink=yes'] =
 $queries['ve save isAnonymous=no isRedlink=no'] =
   '@message:"veTrack-v3" AND @context.action:"ve-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 
-$timeStamp = time() - 60 * 60 * 24;
-
 date_default_timezone_set('utc');
+$timeStamp = time() - ( $days * 60 * 60 * 24 );
 $results = runQueries(
   date('Y.m.d', $timeStamp),
   $queries
@@ -151,4 +155,3 @@ $data['ve_z'] = $results['ve save isAnonymous=no isRedlink=no'];
 $queryData = http_build_query($data);
 $command = "curl 'https://script.google.com/macros/s/AKfycbxvTZ7qYe3RB-8sOvzywHXc_sbSGWXOeCzn5qZGSTqgI0lFz-8/exec?{$queryData}'";
 $output = shell_exec ( $command );
-//echo "\n\n!!DONE!!\n\n";
