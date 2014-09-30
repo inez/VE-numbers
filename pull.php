@@ -47,7 +47,7 @@ function runQueries( $dateString, $queries ) {
     //echo "\n\n--\n" .  $val . "\n--\n\n";
     $query = $query_template;
     $query = str_replace( '__query__', escapeKibanaQuery( $val ), $query );
-    $command = "curl -s -XGET http://datalog-s6:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
+    $command = "curl -s -XGET http://lb-s1:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
 echo $command."\n\n\n";
     $output = shell_exec ( $command );
 print_r($output);
