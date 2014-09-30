@@ -44,9 +44,10 @@ function runQueries( $dateString, $queries ) {
   global $query_template;
   $results = array();
   foreach ( $queries as $key => $val ) {
+    //echo "\n\n--\n" .  $val . "\n--\n\n";
     $query = $query_template;
     $query = str_replace( '__query__', escapeKibanaQuery( $val ), $query );
-    $command = "curl -s -XGET http://datalog-s3:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
+    $command = "curl -s -XGET http://datalog-s6:9200/logstash-{$dateString}/_search?pretty -d '{$query}'";
 echo $command."\n\n\n";
     $output = shell_exec ( $command );
 print_r($output);
@@ -62,57 +63,57 @@ print_r($output);
 
 $queries = array();
 $queries['ck imp isAnonymous=yes isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-edit-page-start" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-edit-page-start" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ck imp isAnonymous=yes isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-edit-page-start" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-edit-page-start" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 $queries['ck imp isAnonymous=no isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-edit-page-start" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-edit-page-start" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ck imp isAnonymous=no isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-edit-page-start" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-edit-page-start" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 
 $queries['ve impstart isAnonymous=yes isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-start" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-start" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve impstart isAnonymous=yes isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-start" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-start" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 $queries['ve impstart isAnonymous=no isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-start" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-start" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve impstart isAnonymous=no isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-start" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-start" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 
 $queries['ve impstop isAnonymous=yes isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-stop" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-stop" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve impstop isAnonymous=yes isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-stop" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-stop" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 $queries['ve impstop isAnonymous=no isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-stop" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-stop" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve impstop isAnonymous=no isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-edit-page-stop" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-edit-page-stop" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 
 $queries['ck save isAnonymous=yes isRedlink=yes isDirty=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes" AND @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes" AND @context.isDirty:"yes"';
 $queries['ck save isAnonymous=yes isRedlink=no isDirty=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" AND @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" AND @context.isDirty:"yes"';
 $queries['ck save isAnonymous=no isRedlink=yes isDirty=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes" AND @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes" AND @context.isDirty:"yes"';
 $queries['ck save isAnonymous=no isRedlink=no isDirty=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" AND @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" AND @context.isDirty:"yes"';
 $queries['ck save isAnonymous=yes isRedlink=yes isDirty=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
 $queries['ck save isAnonymous=yes isRedlink=no isDirty=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
 $queries['ck save isAnonymous=no isRedlink=yes isDirty=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
 $queries['ck save isAnonymous=no isRedlink=no isDirty=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ck-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes" NOT @context.isDirty:"yes"';
 
 $queries['ve save isAnonymous=yes isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-save-button-click" AND @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve save isAnonymous=yes isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-save-button-click" AND @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 $queries['ve save isAnonymous=no isRedlink=yes'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-save-button-click" NOT @context.isAnonymous:"yes" AND @context.isRedlink:"yes"';
 $queries['ve save isAnonymous=no isRedlink=no'] =
-  '@message:"veTrack-v3" AND @context.action:"ve-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
+  '@message:"veTrack-v5" AND @context.action:"ve-save-button-click" NOT @context.isAnonymous:"yes" NOT @context.isRedlink:"yes"';
 
 date_default_timezone_set('utc');
 $timeStamp = time() - ( $days * 60 * 60 * 24 );
